@@ -7,6 +7,17 @@
     <title>002</title>
 </head>
 
+<style>
+    #floating-img {
+        position: absolute;
+        width: 11%;
+        /* or whatever size you want */
+        height: auto;
+        cursor: grab;
+        z-index: 1000;
+    }
+</style>
+
 <body>
     <h1 class="article-heading">[02] EARTH, WIND & FIRE: THE POETICS OF BEING</h1>
     <div id="article-body">
@@ -133,6 +144,8 @@
                 inter-being</strong>.</p>
     </div>
 
+    <img id="floating-img" src="flower.png" alt="floating" draggable="false" />
+
     <a href="rg001.html" style="color: black; display: flex; justify-content: center;">[001]</a>
 
     <p class="sidenote"><em>RAREGARDEN is a bi-weekly digital research magazine that breathes in the space between art,
@@ -141,6 +154,58 @@
             Each issue offers visual essays, ambient experiments, and poetic prototypes for curious minds. I collect
             fragments, not conclusions; observations, not algorithms. Designed for soft clicks, quiet awe, and scrolling
             without urgency. Stay a while — something’s always blooming.</em></p>
+
+
+    <script>
+        window.onload = function () {
+            const img = document.getElementById("floating-img");
+
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+
+            const imgWidth = 50;  // Update this if your image size is different
+            const imgHeight = 50;
+
+            // Set random start position within bounds
+            img.style.left = `${Math.random() * (vw - imgWidth)}px`;
+            img.style.top = `${Math.random() * (vh - imgHeight)}px`;
+
+            let offsetX = 0, offsetY = 0, isDragging = false;
+
+            img.addEventListener("mousedown", (e) => {
+                isDragging = true;
+                offsetX = e.clientX - img.offsetLeft;
+                offsetY = e.clientY - img.offsetTop;
+                img.style.cursor = "grabbing";
+                e.preventDefault();
+            });
+
+            document.addEventListener("mousemove", (e) => {
+                if (!isDragging) return;
+
+                let newX = e.clientX - offsetX;
+                let newY = e.clientY - offsetY;
+
+                // Clamp to viewport bounds
+                newX = Math.max(0, Math.min(vw - imgWidth, newX));
+                newY = Math.max(0, Math.min(vh - imgHeight, newY));
+
+                img.style.left = `${newX}px`;
+                img.style.top = `${newY}px`;
+            });
+
+            document.addEventListener("mouseup", () => {
+                isDragging = false;
+                img.style.cursor = "grab";
+            });
+
+            // Optional: update vw/vh on resize
+            window.addEventListener("resize", () => {
+                vw = window.innerWidth;
+                vh = window.innerHeight;
+            });
+        };
+    </script>
 
 
 </body>
